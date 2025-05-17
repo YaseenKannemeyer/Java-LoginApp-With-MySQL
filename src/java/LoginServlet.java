@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
 
             // Connect to DB
             Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/loginapp", "root", "Cdltibdk1");
+                    "jdbc:mysql://localhost:3306/loginapp", "YourUsername", "YourPassword");
 
             // Prepare SQL statement
             PreparedStatement stmt = conn.prepareStatement(
