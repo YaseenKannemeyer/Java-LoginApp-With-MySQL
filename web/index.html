@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 50px;
+      background: #f3f3f3;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 300px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #message {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    #message.success {
+      color: green;
+    }
+    #message.error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 style="text-align:center;">Login</h2>
+
+  <form id="loginForm" method="POST">
+    <input name="username" placeholder="Username" required><br>
+    <input type="password" name="password" placeholder="Password" required><br>
+    <button type="submit">Login</button>
+  </form>
+
+  <div id="message"></div> <!-- Message area -->
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+
+      try {
+        const res = await fetch("http://localhost:8080/LoginApp/LoginServlet", {
+          method: "POST",
+          body: formData
+        });
+
+        const text = await res.text();
+
+        const messageDiv = document.getElementById("message");
+        if (text.trim().toLowerCase().includes("success")) {
+          messageDiv.textContent = "✅ Login successful! Connected to the database.";
+          messageDiv.className = "success";
+        } else {
+          messageDiv.textContent = "❌ Login failed. Check username or password.";
+          messageDiv.className = "error";
+        }
+      } catch (err) {
+        document.getElementById("message").textContent = "⚠️ Error connecting to server.";
+        document.getElementById("message").className = "error";
+        console.error(err);
+      }
+    });
+  </script>
+
+</body>
+</html>
